@@ -3,10 +3,11 @@ ArrayList<Particle> particles;
 int num = 350;
 boolean hyperSpace;
 void addParticle() {
-  float rand = (float)(Math.random()*10)-5.0;
+  float randX = (float)(Math.random()*20)-10.0;
+  float randY = (float)(Math.random()*20)-10.0;
   int randSize = int(random(4, 10));
-  int randLen = int(random(25,50));
-  particles.add(new StarParticle(250.0,250.0, 250.0+rand, 250.0+rand, randSize, randLen));
+  int randLen = int(random(25,75));
+  particles.add(new StarParticle(250.0,250.0, 250.0+randX, 250.0+randY, randSize, randLen));
   particles.get(particles.size()-1).setSpd();
 }
 void setup() {
@@ -83,8 +84,8 @@ class StarParticle implements Particle {
     return currentY;
   }
   public void setSpd() {
-    spdX = (float)(Math.cos(direction) * 1.25);
-    spdY = (float)(Math.sin(direction) * 1.25);
+    spdX = (float)(Math.cos(direction) * 2.25);
+    spdY = (float)(Math.sin(direction) * 2.25);
     // spdX = currentX - originX;
     // spdY = currentY - originY;
     int maxSpd = 25;
@@ -124,7 +125,7 @@ class JumboStar implements Particle {
 
   }
   void show() {
-    
+
   }
 }
 
