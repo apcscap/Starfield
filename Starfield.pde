@@ -165,6 +165,26 @@ class OddStar implements Particle {
 
 }
 
+class OddBall implements Particle {
+  JumboStar() {
+
+  }
+  float getCurrentX() {
+    return 0;
+  }
+  float getCurrentY() {
+    return 0;
+  }
+  void stretch() {
+
+  }
+  void setSpd() {
+
+  }
+  void show() {
+
+  }
+}
 interface Particle {
   public void move();
   public void show();
