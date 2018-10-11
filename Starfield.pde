@@ -5,11 +5,16 @@ boolean hyperSpace;
 void addParticle() {
   float randX = (float)(Math.random()*20)-10.0;
   float randY = (float)(Math.random()*20)-10.0;
-  int randSize = int(random(4, 10));
-  int randLen = int(random(25,75));
-  particles.add(new StarParticle(250.0,250.0, 250.0+randX, 250.0+randY, randSize, randLen));
-  particles.get(particles.size()-1).setSpd();
+  int randSize = (int)(Math.random()*6)+4;
+  int randLen = (int)(Math.random()*50)+25;
+  particles.add(new StarParticle(250.0,250.0, 250.0, 250.0, randSize, randLen));
+  // particles.get(particles.size()-1).setSpd();
+  // particles.add(new JumboStar(250.0, 250.0, 50);
 }
+void addJumboStar() {
+  particles.add(new JumboStar(250.0, 250.0, 50));
+}
+int count = 0;
 void setup() {
   size(500, 500);
   background(0);
@@ -29,24 +34,24 @@ void draw() {
         particles.remove(i);
         continue;
     }
-    particles.get(i).stretch();
+    particles.get(i).move();
     particles.get(i).show();
   }
-  for(int i=0;i<1;i++) {
-    addParticle();
+  addParticle();
+  if(count >= 5 && !hyperSpace) {
+    addJumboStar();
+    count = 0;
+  } else if(!hyperSpace) {
+    count += 1;
   }
 }
 
 class StarParticle implements Particle {
   int strokeSize;
-  float originX;
-  float originY;
-  float currentX;
-  float currentY;
-  float spdX;
-  float spdY;
-  float newX;
-  float newY;
+  float originX,originY;
+  float currentX,currentY;
+  float spdX,spdY;
+  float newX,newY;
   int len;
   float direction;
   StarParticle(float originX, float originY, float x, float y, int strokeSize, int len) {
@@ -57,8 +62,9 @@ class StarParticle implements Particle {
     this.originY = originY;
     this.len = len;
     this.direction = (float)(Math.random()*2*Math.PI);
+    setSpd();
   }
-  public void stretch() {
+  public void move() {
     newX += spdX;
     newY += spdY;
     if(!hyperSpace) {
@@ -66,6 +72,7 @@ class StarParticle implements Particle {
       currentY += spdY;
       return;
     }
+    // makes a star strech
     if(len <= 0) {
       currentX += spdX;
       currentY += spdY;
@@ -73,7 +80,7 @@ class StarParticle implements Particle {
     len--;
   }
   public void show() {
-    stroke(0, 0, random(50,200));
+    stroke(0, 0, (int)(Math.random()*150)+50);
     strokeWeight(strokeSize);
     line(currentX, currentY, newX, newY);
   }
@@ -84,41 +91,69 @@ class StarParticle implements Particle {
     return currentY;
   }
   public void setSpd() {
-    spdX = (float)(Math.cos(direction) * 2.25);
-    spdY = (float)(Math.sin(direction) * 2.25);
-    // spdX = currentX - originX;
-    // spdY = currentY - originY;
-    int maxSpd = 25;
-    // spdX /= 10;
-    // spdY /= 10;
-    if(spdX <= 0 && spdY <= 0) {
-      // while(Math.abs(spdX) >= maxSpd || Math.abs(spdY) >= maxSpd) {
-      //   spdX /= 10;
-      //   spdY /= 10;
-      // }
-    } else {
-      // while(spdX >= maxSpd || spdY >= maxSpd) {
-      //    This is causing too fast stretch 
-      //   spdX /= 10;
-      //   spdY /= 10;
-      // }
-    }
+    int maxSpd = 5.25;
+    spdX = (float)(Math.cos(direction) * maxSpd);
+    spdY = (float)(Math.sin(direction) * maxSpd);
     newX = currentX;
     newY = currentY;
   }
 }
 
 class JumboStar implements Particle {
-  JumboStar() {
-
+  float starX, starY;
+  int starSize;
+  float spdX;
+  float spdY;
+  float direction;
+  JumboStar(int x, int y, int size) {
+    starX = x;
+    starY = y;
+    starSize = size;
+    direction = (float)(Math.random()*2*Math.PI);
+    setSpd();
   }
   float getCurrentX() {
-    return 0;
+    return starX;
   }
   float getCurrentY() {
-    return 0;
+    return starY;
   }
-  void stretch() {
+  void move() {
+    if(hyperSpace) {
+      starX += spdX*5;
+      starY += spdY*5;
+    } else {
+      starX += spdX;
+      starY += spdY;
+    }
+  }
+  void setSpd() {
+    int maxSpd = 2.25;
+    spdX = (float)(Math.cos(direction) * maxSpd);
+    spdY = (float)(Math.sin(direction) * maxSpd);
+  }
+  void show() {
+    stroke((int)(Math.random()*100));
+    fill((int)(Math.random()*150)+50);
+    ellipse(starX, starY, starSize, starSize);
+  }
+}
+
+class OddStar implements Particle {
+  float starX, starY;
+  int starSize;
+  OddStar() {
+    starX = x;
+    starY = y;
+    starSize = size;
+  }
+  float getCurrentX() {
+    return starX;
+  }
+  float getCurrentY() {
+    return starY;
+  }
+  void move() {
 
   }
   void setSpd() {
@@ -127,10 +162,11 @@ class JumboStar implements Particle {
   void show() {
 
   }
+
 }
 
 interface Particle {
-  public void stretch();
+  public void move();
   public void show();
   public void setSpd();
   public float getCurrentX();
