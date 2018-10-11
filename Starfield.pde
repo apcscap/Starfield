@@ -14,6 +14,9 @@ void addParticle() {
 void addJumboStar() {
   particles.add(new JumboStar(250.0, 250.0, 50));
 }
+void addOddStar() {
+  particles.add(new OddStar((float)Math.random()*100, (float)Math.random()*100, 100));
+}
 int count = 0;
 void setup() {
   size(500, 500);
@@ -21,8 +24,11 @@ void setup() {
   //particles = new Particle[num];
   particles = new ArrayList<Particle>();
   for(int i=0;i<num;i++) {
+    if (i==0) {
+      addOddStar();
+    }
     addParticle();
-    particles.get(i).setSpd();
+    // particles.get(i).setSpd();
     particles.get(i).show();
   }
   hyperSpace = false;
@@ -91,7 +97,7 @@ class StarParticle implements Particle {
     return currentY;
   }
   public void setSpd() {
-    int maxSpd = 5.25;
+    float maxSpd = 5.25;
     spdX = (float)(Math.cos(direction) * maxSpd);
     spdY = (float)(Math.sin(direction) * maxSpd);
     newX = currentX;
@@ -105,7 +111,7 @@ class JumboStar implements Particle {
   float spdX;
   float spdY;
   float direction;
-  JumboStar(int x, int y, int size) {
+  JumboStar(float x, float y, int size) {
     starX = x;
     starY = y;
     starSize = size;
@@ -128,7 +134,7 @@ class JumboStar implements Particle {
     }
   }
   void setSpd() {
-    int maxSpd = 2.25;
+    float maxSpd = 2.25;
     spdX = (float)(Math.cos(direction) * maxSpd);
     spdY = (float)(Math.sin(direction) * maxSpd);
   }
@@ -142,10 +148,14 @@ class JumboStar implements Particle {
 class OddStar implements Particle {
   float starX, starY;
   int starSize;
-  OddStar() {
+  float spdX, spdY;
+  float direction;
+  OddStar(float x, float y, int size) {
     starX = x;
     starY = y;
     starSize = size;
+    direction = (float)(Math.random()*2*Math.PI);
+    setSpd();
   }
   float getCurrentX() {
     return starX;
@@ -154,13 +164,21 @@ class OddStar implements Particle {
     return starY;
   }
   void move() {
+    if(hyperSpace) {
 
+    } else {
+      starX += (Math.random()*4)-2.0;
+      starY += (Math.random()*4)-2.0;
+    }
   }
   void setSpd() {
-
+    spdX = 5;
+    spdY = 5;
   }
   void show() {
-
+    noStroke();
+    fill(100);
+    ellipse(starX, starY, starSize, starSize);
   }
 
 }
