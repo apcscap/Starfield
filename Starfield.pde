@@ -15,7 +15,7 @@ void addJumboStar() {
   particles.add(new JumboStar(250.0, 250.0, 50));
 }
 void addOddStar() {
-  particles.add(new OddStar((float)Math.random()*100, (float)Math.random()*100, 100));
+  particles.add(new OddStar((float)Math.random()*20+80, (float)Math.random()*20+80, 100));
 }
 int count = 0;
 void setup() {
@@ -139,8 +139,8 @@ class JumboStar implements Particle {
     spdY = (float)(Math.sin(direction) * maxSpd);
   }
   void show() {
-    stroke((int)(Math.random()*100));
-    fill((int)(Math.random()*150)+50);
+    stroke(100);
+    fill(150);
     ellipse(starX, starY, starSize, starSize);
   }
 }
@@ -154,7 +154,7 @@ class OddStar implements Particle {
     starX = x;
     starY = y;
     starSize = size;
-    direction = (float)(Math.random()*2*Math.PI);
+    direction = (float)(Math.random()*Math.PI)+Math.PI/2;
     setSpd();
   }
   float getCurrentX() {
@@ -165,20 +165,25 @@ class OddStar implements Particle {
   }
   void move() {
     if(hyperSpace) {
-
+      starX += spdX;
+      starY += spdY;
     } else {
-      starX += (Math.random()*4)-2.0;
-      starY += (Math.random()*4)-2.0;
+      starX += (Math.random()*2)-1.0;
+      starY += (Math.random()*2)-1.0;
     }
   }
   void setSpd() {
-    spdX = 5;
-    spdY = 5;
+    float maxSpd = 2.25*5.0;
+    spdX = (float)(Math.cos(direction) * maxSpd);
+    spdY = (float)(Math.sin(direction) * maxSpd);
+;
   }
   void show() {
     noStroke();
     fill(100);
     ellipse(starX, starY, starSize, starSize);
+    fill(110)
+    ellipse(starX+starSize/8, starY-starSize/8, starSize/4, starSize/4);
   }
 
 }
