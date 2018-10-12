@@ -173,7 +173,7 @@ class OddStar implements Particle {
     }
   }
   void setSpd() {
-    float maxSpd = 2.25*5.0;
+    float maxSpd = 15.0;
     spdX = (float)(Math.cos(direction) * maxSpd);
     spdY = (float)(Math.sin(direction) * maxSpd);
 ;
