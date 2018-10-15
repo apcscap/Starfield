@@ -1,51 +1,83 @@
-//Particle[] particles;
-ArrayList<Particle> particles;
+Particle[] particles;
+// ArrayList<Particle> particles;
 int num = 350;
 boolean hyperSpace;
-void addParticle() {
+// void addParticle() {
+//   float randX = (float)(Math.random()*20)-10.0;
+//   float randY = (float)(Math.random()*20)-10.0;
+//   int randSize = (int)(Math.random()*6)+4;
+//   int randLen = (int)(Math.random()*50)+25;
+//   particles.add(new StarParticle(250.0,250.0, 250.0, 250.0, randSize, randLen));
+//   // particles.get(particles.size()-1).setSpd();
+//   // particles.add(new JumboStar(250.0, 250.0, 50);
+// }
+// void addJumboStar() {
+//   particles.add(new JumboStar(250.0, 250.0, 50));
+// }
+// void addOddStar() {
+//   particles.add(new OddStar((float)Math.random()*20+80, (float)Math.random()*20+80, 100));
+// }
+
+void addParticle(int i) {
   float randX = (float)(Math.random()*20)-10.0;
   float randY = (float)(Math.random()*20)-10.0;
   int randSize = (int)(Math.random()*6)+4;
   int randLen = (int)(Math.random()*50)+25;
-  particles.add(new StarParticle(250.0,250.0, 250.0, 250.0, randSize, randLen));
+  particles[i] = new StarParticle(250.0,250.0, 250.0, 250.0, randSize, randLen);
   // particles.get(particles.size()-1).setSpd();
   // particles.add(new JumboStar(250.0, 250.0, 50);
 }
-void addJumboStar() {
-  particles.add(new JumboStar(250.0, 250.0, 50));
+void addJumboStar(int i) {
+  particles[i] = new JumboStar(250.0, 250.0, 50);
 }
-void addOddStar() {
-  particles.add(new OddStar((float)Math.random()*20+80, (float)Math.random()*20+80, 100));
+void addOddStar(int i) {
+  particles[i] = new OddStar((float)Math.random()*20+80, (float)Math.random()*20+80, 100);
 }
+
 int count = 0;
 void setup() {
   size(500, 500);
   background(0);
-  //particles = new Particle[num];
-  particles = new ArrayList<Particle>();
+  particles = new Particle[num];
+  // particles = new ArrayList<Particle>();
   for(int i=0;i<num;i++) {
     if (i==0) {
-      addOddStar();
+      // addOddStar();
+      addOddStar(i);
     }
-    addParticle();
+    // addParticle();
+    addParticle(i);
+
     // particles.get(i).setSpd();
-    particles.get(i).show();
+
+    // particles.get(i).show();
+    particles[i].show();
   }
   hyperSpace = false;
 }
 void draw() {
   background(0);
-  for(int i=0;i<particles.size();i++) {
-    if(particles.get(i).getCurrentX() > 500 || particles.get(i).getCurrentY() < 0 || particles.get(i).getCurrentX() > 500 || particles.get(i).getCurrentY() < 0) {
-        particles.remove(i);
+  // for(int i=0;i<particles.size();i++) {
+    for(int i=0;i<particles.length;i++) {
+
+    // if(particles.get(i).getCurrentX() > 500 || particles.get(i).getCurrentY() < 0 || particles.get(i).getCurrentX() > 500 || particles.get(i).getCurrentY() < 0) {
+    //     particles.remove(i);
+    //     continue;
+    // }
+    if(particles[i].getCurrentX() > 500 || particles[i].getCurrentY() < 0 || particles[i].getCurrentX() > 500 || particles[i].getCurrentY() < 0) {
+        int randSize = (int)(Math.random()*6)+4;
+        int randLen = (int)(Math.random()*50)+25;
+        // particles[i] = new StarParticle(250.0,250.0, 250.0, 250.0, randSize, randLen);
         continue;
     }
-    particles.get(i).move();
-    particles.get(i).show();
+    // particles.get(i).move();
+    // particles.get(i).show();
+    particles[i].move();
+    particles[i].show();
   }
-  addParticle();
+  // addParticle();
   if(count >= 5 && !hyperSpace) {
-    addJumboStar();
+    addJumboStar(10);
     count = 0;
   } else if(!hyperSpace) {
     count += 1;
@@ -154,7 +186,7 @@ class OddStar implements Particle {
     starX = x;
     starY = y;
     starSize = size;
-    direction = (float)(Math.random()*Math.PI)+Math.PI/2;
+    direction = (float)((Math.random()*Math.PI)+Math.PI/2);
     setSpd();
   }
   float getCurrentX() {
@@ -182,7 +214,7 @@ class OddStar implements Particle {
     noStroke();
     fill(100);
     ellipse(starX, starY, starSize, starSize);
-    fill(110)
+    fill(110);
     ellipse(starX+starSize/8, starY-starSize/8, starSize/4, starSize/4);
   }
 
